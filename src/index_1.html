@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/layout.css">
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-database.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-analytics.js"></script>
+
+  <!-- Firechat -->
+  <link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+  <script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <header>
+      <div class=" col-12 col-md-12 ctiHead">
+        <h1 class="align-content-center">Avant Premiere Pvt Ltd | Your Partner In Events</h1>
+      </div>
+    </header>
+
+    <section class="row ">
+      <nav class="col-2 pt-4">
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action " data-toggle="tooltip"
+            title="Create New Customer">ITB Conference</a>
+          <a href="#" class="list-group-item list-group-item-action" data-toggle="tooltip"
+            title="Update Technical Details">WTM Confrence</a>
+          <a href="#" class="list-group-item list-group-item-action">Tourism Chalanges</a>
+        </div>
+      </nav>
+
+      <article class="col-10 pt-4">
+        <h2>WTM Live Streaming</h2>
+        <div class="row">
+          <div class="col-8 col-md-6">
+
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/pdqV7Tqd-gM" frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="col-4 col-md-6" id="firechat-wrapper" style="padding-left:30px;">
+            <button onclick="login();">Login with Google</button>
+          </div>
+        </div>
+        <h2>Register New Member</h2>
+        <form action="/action_page.php">
+          <div class="row">
+            <div class="col-6 col-md-6">
+              <div class="form-group">
+                <label for="email">Tel Number :</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+              </div>
+              <div class="form-group">
+                <label for="email">EMI Number :</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+              </div>
+
+            </div>
+            <div class="col-6 col-md-6">
+
+
+              <div class="form-group">
+                <label for="email">First Name :</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+              </div>
+
+
+
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </article>
+    </section>
+
+    <footer>
+      <p>Footer</p>
+    </footer>
+  </div>
+
+  <script>
+
+    var firebaseConfig = {
+      apiKey: "AIzaSyDre8EC1Cp1tfes5Vmxsqvx5kS_0OyXtx0",
+      authDomain: "firechat-798da.firebaseapp.com",
+      databaseURL: "https://firechat-798da.firebaseio.com",
+      projectId: "firechat-798da",
+      storageBucket: "firechat-798da.appspot.com",
+      messagingSenderId: "306678686113",
+      appId: "1:306678686113:web:03f68f5b3dd60354fcabe0",
+      measurementId: "G-DX244ZCK4G"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+
+    function login() {
+      // Log the user in via Twitter
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).catch(function (error) {
+        console.log("Error authenticating user:", error);
+      });
+    }
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      // Once authenticated, instantiate Firechat with the logged in user
+      if (user) {
+        initChat(user);
+      }
+    });
+
+    function initChat(user) {
+      // Get a Firebase Database ref
+      var chatRef = firebase.database().ref();
+
+      // Create a Firechat instance
+      var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+
+      // Set the Firechat user
+      chat.setUser(user.uid, user.displayName);
+    }
+  </script>
+
+</body>
+
+</html>
