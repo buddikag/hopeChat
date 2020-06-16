@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-database.js"></script>
+    
+    <!-- Firebase -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-analytics.js"></script>
+
+    <!-- Firechat -->
+    <link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+    <script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
+</head>
+
+<body>
+    <script>
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyDre8EC1Cp1tfes5Vmxsqvx5kS_0OyXtx0",
+            authDomain: "firechat-798da.firebaseapp.com",
+            databaseURL: "https://firechat-798da.firebaseio.com",
+            projectId: "firechat-798da",
+            storageBucket: "firechat-798da.appspot.com",
+            messagingSenderId: "306678686113",
+            appId: "1:306678686113:web:03f68f5b3dd60354fcabe0",
+            measurementId: "G-DX244ZCK4G"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+
+        function login() {
+            // Log the user in via Twitter
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).catch(function (error) {
+                console.log("Error authenticating user:", error);
+            });
+        }
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            // Once authenticated, instantiate Firechat with the logged in user
+            if (user) {
+                initChat(user);
+            }
+        });
+
+        function initChat(user) {
+            // Get a Firebase Database ref
+            var chatRef = firebase.database().ref();
+
+            // Create a Firechat instance
+            var chat = new FirechatUI(chatRef, document.getElementById("firechat-wrapper"));
+
+            // Set the Firechat user
+            chat.setUser(user.uid, user.displayName);
+        }
+    </script>
+
+    <div id="firechat-wrapper">
+        <button onclick="login();">Login with Google</button>
+    </div>
+</body>
+
+</html>
